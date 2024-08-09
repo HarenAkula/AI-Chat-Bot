@@ -2,12 +2,17 @@
 
 import { Box, Button, Stack, TextField } from '@mui/material'
 import { useState } from 'react'
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the Headstarter support assistant. How can I help you today?",
+      content: "Hi! I'm the Headstarter AI support assistant. How can I help you today?",
     },
   ])
   const [message, setMessage] = useState('')
@@ -71,21 +76,26 @@ export default function Home() {
    }
 
   return (
+    <ThemeProvider theme={darkTheme} >
     <Box
       width="100vw"
-      height="100vh"
+      height="98vh"
       display="flex"
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
+      padding={2}
+      
     >
       <Stack
         direction={'column'}
         width="500px"
         height="700px"
-        border="1px solid black"
         p={2}
         spacing={3}
+        padding={2}
+      border={'solid'}
+      borderColor={'whitesmoke'}
       >
         <Stack
           direction={'column'}
@@ -105,11 +115,10 @@ export default function Home() {
               <Box
                 bgcolor={
                   message.role === 'assistant'
-                    ? 'primary.main'
-                    : 'secondary.main'
+                    ? 'primary.dark'
+                    : 'secondary.dark'
                 }
-                color="white"
-                borderRadius={16}
+                borderRadius={2}
                 p={3}
               >
                 {message.content}
@@ -117,13 +126,15 @@ export default function Home() {
             </Box>
           ))}
         </Stack>
-        <Stack direction={'row'} spacing={2}>
+        <Stack direction={'row'} spacing={2} color={'white'}>
                   <TextField
                     label="Message"
                     fullWidth
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyPress={handleKeyPress}
+                    variant="outlined"
+                    placeholder='Enter your Message...'
                     disabled={isLoading}
                   />
           <Button
@@ -136,5 +147,6 @@ export default function Home() {
         </Stack>
       </Stack>
     </Box>
+    </ThemeProvider>
   )
 }
