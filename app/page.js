@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Stack, TextField } from '@mui/material'
+import { Box, Button, Stack, TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 const darkTheme = createTheme({
@@ -12,7 +12,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the Headstarter AI support assistant. How can I help you today?",
+      content: "Hi! I'm the your kitchen cooking assistant. You can ask me for recipes from all around the world. I can even customize them based on the ingredients you have. What are you planning to cook today?",
     },
   ])
   const [message, setMessage] = useState('')
@@ -76,77 +76,162 @@ export default function Home() {
    }
 
   return (
-    <ThemeProvider theme={darkTheme} >
-    <Box
-      width="100vw"
-      height="98vh"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      padding={2}
-      
+    
+    <ThemeProvider theme={darkTheme}>
+  <Box
+    width="100vw"
+    height="100vh"
+    display="flex"
+    flexDirection="column"
+    justifyContent="center"
+    alignItems="center"
+    paddingX={2}
+  >
+    <Typography variant="h2" margin="auto" paddingY={2}>
+      AI Recipe Generator
+    </Typography>
+
+    <Stack
+      direction="column"
+      width="100%"
+      maxWidth="1200px"
+      height="100%"
+      margin="auto"
+      paddingX={2}
+      paddingY={2}
+      spacing={3}
+      border="solid"
+      borderColor="whitesmoke"
+      overflow="hidden"
     >
       <Stack
-        direction={'column'}
-        width="500px"
-        height="700px"
-        p={2}
-        spacing={3}
-        padding={2}
-      border={'solid'}
-      borderColor={'whitesmoke'}
+        direction="column"
+        spacing={2}
+        flexGrow={1}
+        overflow="auto"
       >
-        <Stack
-          direction={'column'}
-          spacing={2}
-          flexGrow={1}
-          overflow="auto"
-          maxHeight="100%"
-        >
-          {messages.map((message, index) => (
+        {messages.map((message, index) => (
+          <Box
+            key={index}
+            display="flex"
+            justifyContent={
+              message.role === 'assistant' ? 'flex-start' : 'flex-end'
+            }
+          >
             <Box
-              key={index}
-              display="flex"
-              justifyContent={
-                message.role === 'assistant' ? 'flex-start' : 'flex-end'
+              bgcolor={
+                message.role === 'assistant'
+                  ? 'primary.dark'
+                  : 'secondary.dark'
               }
+              borderRadius={2}
+              p={3}
+              color="white"
+              maxWidth="70%"
             >
-              <Box
-                bgcolor={
-                  message.role === 'assistant'
-                    ? 'primary.dark'
-                    : 'secondary.dark'
-                }
-                borderRadius={2}
-                p={3}
-              >
-                {message.content}
-              </Box>
+              {message.content}
             </Box>
-          ))}
-        </Stack>
-        <Stack direction={'row'} spacing={2} color={'white'}>
-                  <TextField
-                    label="Message"
-                    fullWidth
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    variant="outlined"
-                    placeholder='Enter your Message...'
-                    disabled={isLoading}
-                  />
-          <Button
-                      variant="contained"
-                      onClick={sendMessage}
-                      disabled={isLoading}
-                    >
-                      {isLoading ? 'Sending...' : 'Send'}
-                    </Button>
-        </Stack>
+          </Box>
+        ))}
       </Stack>
-    </Box>
-    </ThemeProvider>
+
+      <Stack direction="row" spacing={2} paddingY={2}>
+        <TextField
+          label="Message"
+          fullWidth
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={handleKeyPress}
+          variant="outlined"
+          placeholder="Enter your message..."
+          disabled={isLoading}
+        />
+        <Button
+          variant="contained"
+          onClick={sendMessage}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Sending...' : 'Send'}
+        </Button>
+      </Stack>
+    </Stack>
+  </Box>
+</ThemeProvider>
+
+    // <ThemeProvider theme={darkTheme} >
+    // <Box
+    //   width="100vw"
+    //   height="98vh"
+    //   display="flex"
+    //   flexDirection="column"
+    //   justifyContent="center"
+    //   alignItems="center"
+    //   padding={2}
+      
+    // >      <Typography variant='h2' margin={'auto'}>AI Recipe Generator</Typography>
+
+    //   <Stack
+    //     direction={'column'}
+    //     width="90vw"
+    //     margin={'auto'}
+    //     height="700px"
+    //     p={2}
+    //     spacing={3}
+    //     padding={2}
+    //   border={'solid'}
+    //   borderColor={'whitesmoke'}
+    //   >
+    //     <Stack
+    //       direction={'column'}
+    //       spacing={2}
+    //       flexGrow={1}
+    //       overflow="auto"
+    //       maxHeight="100%"
+    //     >
+    //       {messages.map((message, index) => (
+    //         <Box
+    //           key={index}
+    //           display="flex"
+    //           justifyContent={
+    //             message.role === 'assistant' ? 'flex-start' : 'flex-end'
+    //           }
+    //         >
+    //           <Box
+    //             bgcolor={
+    //               message.role === 'assistant'
+    //                 ? 'primary.dark'
+    //                 : 'secondary.dark'
+    //             }
+    //             borderRadius={2}
+    //             p={3}
+    //           >
+    //             {message.content}
+    //           </Box>
+    //         </Box>
+    //       ))}
+    //     </Stack>
+    //     <Stack direction={'row'} spacing={2} color={'white'}>
+    //               <TextField
+    //                 label="Message"
+    //                 fullWidth
+    //                 value={message}
+    //                 onChange={(e) => setMessage(e.target.value)}
+    //                 onKeyPress={handleKeyPress}
+    //                 variant="outlined"
+    //                 placeholder='Enter your Message...'
+    //                 disabled={isLoading}
+    //               />
+    //       <Button
+    //                   variant="contained"
+    //                   onClick={sendMessage}
+    //                   disabled={isLoading}
+    //                 >
+    //                   {isLoading ? 'Sending...' : 'Send'}
+    //                 </Button>
+    //     </Stack>
+    //   </Stack>
+    // </Box>
+    // </ThemeProvider>
+
   )
 }
