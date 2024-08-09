@@ -1,5 +1,7 @@
 import {NextResponse} from 'next/server' // Import NextResponse from Next.js for handling responses
 import OpenAI from 'openai' // Import OpenAI library for interacting with the OpenAI API
+import fs from 'fs';
+import path from 'path';
 
 // System prompt for the AI, providing guidelines on how to respond to users
 const systemPrompt = `You are a Recipe Generator. 
@@ -40,4 +42,26 @@ export async function POST(req) {
   })
 
   return new NextResponse(stream) // Return the stream as the response
+}
+
+export async function feedback(req) {
+  const feedbackData = await req.json();
+  
+  const filePath = path.resolve('./feedback.json'); // Define the file path
+
+  // Read the existing feedback
+  let existingFeedback = [];
+  if (fs.existsSync(filePath)) {
+    const fileData = fs.readFileSync(filePath);
+    existingFeedback = JSON.parse(fileData);
+  }
+
+  existingFeedback.push(feedbackData); // Add the new feedback to the array
+
+  // Write the updated feedback array back to the file
+  fs.writeFileSync(filePath, JSON.stringify(existingFeedback, null, 2));
+
+  console.log('Feedback logged:', feedbackData); // Log the new feedback
+  
+  return NextResponse.json({ message: 'Feedback received and logged' });
 }

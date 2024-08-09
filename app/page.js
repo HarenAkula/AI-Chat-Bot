@@ -1,6 +1,8 @@
 'use client'
 
-import { Box, Button, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Stack, TextField, Typography, IconButton } from '@mui/material'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { useState } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 const darkTheme = createTheme({
@@ -13,7 +15,8 @@ export default function Home() {
     {
       role: 'assistant',
       content: "Hi! I'm the your kitchen cooking assistant. You can ask me for recipes from all around the world. I can even customize them based on the ingredients you have. What are you planning to cook today?",
-    },
+      feedback: null,
+      },
   ])
   const [message, setMessage] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -67,6 +70,25 @@ export default function Home() {
    }
    setIsLoading(false)
  }
+ const handleFeedback = async (index, feedback) => {
+  setMessages((messages) => {
+    const newMessages = [...messages];
+    newMessages[index].feedback = feedback;
+    return newMessages;
+  });
+
+  try {
+    await fetch('/api/feedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ index, feedback }),
+    });
+  } catch (error) {
+    console.error('Error submitting feedback:', error);
+  }
+}
 
   const handleKeyPress = (event) => {
      if (event.key === 'Enter' && !event.shiftKey) {
@@ -131,6 +153,16 @@ export default function Home() {
             >
               {message.content}
             </Box>
+            {message.role === 'assistant' && (
+                  <Box display="flex" flexDirection="row" mt={1}>
+                    <IconButton onClick={() => handleFeedback(index, 'like')}>
+                      <ThumbUpIcon color={message.feedback === 'like' ? 'primary' : 'inherit'} />
+                    </IconButton>
+                    <IconButton onClick={() => handleFeedback(index, 'dislike')}>
+                      <ThumbDownIcon color={message.feedback === 'dislike' ? 'error' : 'inherit'} />
+                    </IconButton>
+                  </Box>
+                )}
           </Box>
         ))}
       </Stack>
