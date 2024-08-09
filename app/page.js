@@ -5,6 +5,8 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { useState } from 'react'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import ReactMarkdown from 'react-markdown';
+
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -151,7 +153,10 @@ export default function Home() {
               color="white"
               maxWidth="70%"
             >
-              {message.content}
+            <ReactMarkdown>
+            {message.content}
+            </ReactMarkdown>
+              
             </Box>
             {message.role === 'assistant' && (
                   <Box display="flex" flexDirection="row" mt={1}>
