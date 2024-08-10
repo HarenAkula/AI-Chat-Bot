@@ -150,7 +150,7 @@ export default function Home() {
               }
               borderRadius={2}
               p={3}
-              color="white"
+              color='error.contrastText'
               maxWidth="70%"
             >
             <ReactMarkdown>
@@ -182,6 +182,9 @@ export default function Home() {
           variant="outlined"
           placeholder="Enter your message..."
           disabled={isLoading}
+          InputProps={{
+            style: { color: 'primary.contrastText' },
+          }}
         />
         <Button
           variant="contained"
